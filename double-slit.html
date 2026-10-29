@@ -1,1 +1,54 @@
-<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>빛의 간섭 실험실</title><link rel="stylesheet" href="style.css"><style>main{display:block;max-width:1200px}.lab{display:grid;grid-template-columns:280px 1fr;gap:24px}.panel{background:white;border-radius:22px;padding:24px}label{display:block;margin:24px 0;font-size:14px}input,select{width:100%;margin-top:12px}canvas{width:100%;display:block;border-radius:16px;background:#101e30}#space{height:280px;cursor:grab;margin-top:16px}#wave{height:300px}output{float:right;color:#408366}.legend{color:#748378;font-size:13px;line-height:1.8}.toolbar{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}@media(max-width:700px){.lab{grid-template-columns:1fr}}</style><body><header><a href="double-slit.html">✦ 빛의 간섭 실험실</a><a href="index.html">🐾 무게중심 구조대</a></header><main><div class="intro"><span class="tag">YOUNG’S DOUBLE-SLIT EXPERIMENT</span><h1>빛이 만나 만드는<br><em>놀라운 무늬</em></h1><p style="position:static">조건을 바꾸고, 파동을 관찰하고, 간섭의 원리를 발견하세요.</p></div><div class="lab"><section class="panel"><h2>실험 조건</h2><label>실험 상황<select id="mode"><option value="double">이중슬릿 · 간섭</option><option value="single">단일슬릿 · 회절</option></select></label><label>파장 <output id="lv"></output><input id="lambda" type="range" min="380" max="750" value="550"></label><label>슬릿 간격 <output id="dv"></output><input id="distance" type="range" min="100" max="600" value="250"></label><label>스크린 거리 <output id="Lv"></output><input id="length" type="range" min="50" max="300" value="150"></label><label>슬릿 너비 <output id="av"></output><input id="width" type="range" min="10" max="80" value="40"></label><div class="toolbar"><button id="play">일시정지</button><button id="reset" class="secondary">초기화</button><button id="step" class="secondary">한 단계</button></div><p id="result" class="legend" aria-live="polite"></p><p class="legend">밝은 무늬: d sin θ = mλ<br>중앙 부근 무늬 간격: Δy ≈ λL/d<br>단일슬릿의 첫 어두운 무늬: a sin θ = λ</p></section><section class="panel"><h2>01 · 파동이 스크린에 도달하기까지</h2><p class="legend">입사 → 슬릿 통과 → 중첩 → 간섭무늬 형성</p><canvas id="wave" aria-label="시간에 따라 진행하는 파동과 스크린 강도 그래프"></canvas><h2>02 · 3D 실험 배치</h2><p class="legend">드래그해서 시점을 회전하세요. 광원 → 슬릿 판 → 스크린</p><canvas id="space" aria-label="회전 가능한 3차원 실험 배치"></canvas><p class="legend">교육용 모형: 파동의 길이와 장치 크기는 보기 쉽게 확대했습니다. 오른쪽 강도 그래프는 실제 설정값으로 계산하며 세로 범위는 ±15 mm입니다. 3D 배치는 투영한 도식입니다.</p></section></div></main><script src="slit.js"></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="영의 이중슬릿 실험을 단계별로 관찰하고 파장, 슬릿, 스크린을 조절하는 3D 빛의 실험실">
+  <title>빛의 실험실 · 영의 이중슬릿</title>
+  <link rel="stylesheet" href="slit.css">
+  <script src="slit-physics.js" defer></script>
+  <script src="slit.js" defer></script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="double-slit.html"><span class="brand-mark">∿</span> 빛의 실험실</a><nav aria-label="사이트"><a href="index.html">무게중심 구조대 ↗</a><span class="pill">INTERACTIVE PHYSICS</span></nav></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">EXPERIMENT 01 / YOUNG’S DOUBLE SLIT</p><h1>빛은 어떻게<br><span>무늬가 될까요?</span></h1><p class="description">두 틈을 지난 빛이 만나 만드는 작은 차이.<br>조건을 바꾸고, 시간을 멈추고, 모든 각도에서 발견하세요.</p></div><div class="intro-note"><span class="orbit-icon">✳</span><div>직접 해보는 물리 실험<b>파동 · 중첩 · 간섭</b><span>설치 없이, 브라우저에서.</span></div></div></section>
+    <div class="workspace">
+      <aside class="controls card" aria-label="실험 조건">
+        <div class="section-heading"><span class="number">01</span><h2>실험 설계</h2><button id="reset" class="text-button" title="실험 조건과 시간을 초기화">초기화 ↺</button></div>
+        <label class="field-label" for="mode">실험 상황</label>
+        <select id="mode"><option value="double">두 슬릿 열기 · 간섭</option><option value="single">한 슬릿 열기 · 회절</option><option value="incoherent">위상 무관한 두 빛 · 간섭 없음</option></select>
+        <p id="mode-description" class="help"></p>
+        <fieldset class="presets"><legend>빠른 실험</legend><button data-preset="baseline" aria-pressed="true">기본</button><button data-preset="red" aria-pressed="false">붉은 빛</button><button data-preset="blue" aria-pressed="false">푸른 빛</button><button data-preset="far" aria-pressed="false">먼 스크린</button></fieldset>
+        <div class="parameter"><label for="lambda">빛의 파장 <output id="lv" for="lambda"></output></label><input id="lambda" type="range" min="380" max="750" step="1" value="550"><div class="range-label"><span>380 nm · 보라</span><span>750 nm · 빨강</span></div></div>
+        <div class="parameter"><label for="distance">슬릿 중심 사이 간격 <output id="dv" for="distance"></output></label><input id="distance" type="range" min="100" max="600" step="10" value="250"><div class="range-label"><span>0.10 mm</span><span>0.60 mm</span></div></div>
+        <div class="parameter"><label for="length">슬릿 → 스크린 거리 <output id="Lv" for="length"></output></label><input id="length" type="range" min="50" max="300" step="5" value="150"><div class="range-label"><span>0.50 m</span><span>3.00 m</span></div></div>
+        <div class="parameter"><label for="width">각 슬릿의 너비 <output id="av" for="width"></output></label><input id="width" type="range" min="10" max="80" step="1" value="40"><div class="range-label"><span>0.01 mm</span><span>0.08 mm</span></div></div>
+        <div class="insight"><span>예측해 보세요</span><p id="prediction"></p></div>
+      </aside>
+      <section class="experiment card" aria-label="실험 관찰">
+        <div class="section-heading"><span class="number">02</span><h2>파동의 여정</h2><span id="play-status" class="status"><i></i> 실험 중</span></div>
+        <div class="wave-container"><canvas id="wave" aria-label="입사광, 슬릿을 통과한 파동, 스크린의 간섭무늬와 강도 그래프">캔버스를 지원하는 브라우저가 필요합니다.</canvas></div>
+        <div class="legend"><span><i class="key incoming"></i>입사 파동</span><span><i class="key outgoing"></i>슬릿을 지난 파동</span><span><i class="key screen"></i>스크린 밝기</span></div>
+        <div class="playback"><button id="play" class="primary" aria-label="실험 일시정지">Ⅱ 일시정지</button><button id="step" class="outline">한 단계 →</button><label for="speed" class="speed-label">속도 <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><span id="elapsed" class="elapsed"></span></div>
+        <div class="stages" aria-label="관찰 단계"><button data-stage="0" aria-pressed="true"><b>1</b> 입사</button><button data-stage="1" aria-pressed="false"><b>2</b> 슬릿 통과</button><button data-stage="2" aria-pressed="false"><b>3</b> 중첩</button><button data-stage="3" aria-pressed="false"><b>4</b> 무늬 관찰</button></div>
+        <div class="stage-note" aria-live="polite"><b id="stage-title"></b><p id="stage-description"></p></div>
+      </section>
+      <section class="model card" aria-label="3D 실험 장치">
+        <div class="section-heading"><span class="number">03</span><h2>공간으로 보는 실험</h2><span class="pill small">3D MODEL</span></div>
+        <div class="model-container"><canvas id="space" tabindex="0" role="img" aria-label="3D 실험 장치. 드래그 또는 방향키로 회전하고, 스크롤 또는 더하기 빼기 키로 확대 축소하세요."></canvas><div class="model-hint">드래그로 회전 · 스크롤로 확대</div><span id="renderer-note"></span></div>
+        <div class="view-toolbar" aria-label="3D 시점"><button data-view="perspective" aria-pressed="true">입체</button><button data-view="top" aria-pressed="false">위에서</button><button data-view="front" aria-pressed="false">스크린 정면</button><button id="zoom-in" aria-label="3D 확대">＋</button><button id="zoom-out" aria-label="3D 축소">−</button></div>
+        <p class="help model-caption">광원(왼쪽) → 슬릿 판(가운데) → 스크린(오른쪽). 슬릿 간격과 너비는 관찰을 위해 확대했으며, 실제 계산에는 왼쪽 설정값을 사용합니다.</p>
+      </section>
+      <section class="results card" aria-label="측정과 원리">
+        <div class="section-heading"><span class="number">04</span><h2>무늬에서 읽는 물리</h2></div>
+        <div class="measurement"><div><span id="result-label">밝은 무늬 사이 간격</span><strong id="result" aria-live="polite"></strong><small id="result-formula"></small></div><div><span>중앙 밝기</span><strong id="central-intensity"></strong><small>같은 입사 세기의 한 슬릿 = 1</small></div></div>
+        <div class="formula"><span id="formula-title"></span><code id="formula"></code><p id="explanation"></p></div>
+        <p class="help">스크린·그래프의 세로 범위는 ±15 mm입니다. 밝기는 각 상황의 최댓값으로 정규화해 표시합니다. 균일한 슬릿과 단색광의 원거리 회절 모형이며, 간격 수치는 작은 각도 근사입니다. 파동의 진행 시간은 관찰용으로 느리게 표현합니다.</p>
+      </section>
+    </div>
+    <section class="discover"><span class="eyebrow">TRY THIS</span><h2>한 가지만 바꾸면, 무엇이 달라질까요?</h2><div class="discovery-grid"><article><b>01 / 파장</b><h3>빨강과 파랑의 차이</h3><p>붉은 빛과 푸른 빛을 번갈아 선택하세요. 파장이 길어지면 밝은 줄 사이도 멀어집니다.</p></article><article><b>02 / 슬릿</b><h3>두 틈을 멀리 벌리면</h3><p>슬릿 사이 간격을 늘려보세요. 더 멀어진 슬릿은 오히려 더 촘촘한 간섭무늬를 만듭니다.</p></article><article><b>03 / 중첩</b><h3>빛에 빛을 더하면 어둠?</h3><p>두 파동의 마루와 골이 만나면 상쇄됩니다. ‘위상 무관한 두 빛’과 비교해 간섭의 조건을 찾아보세요.</p></article></div></section>
+  </main>
+  <footer><span class="brand">∿ 빛의 실험실</span><span>질문하고, 바꾸고, 발견하는 시간.</span><a href="index.html">무게중심 구조대 ↗</a></footer>
+</body>
+</html>
